@@ -1,0 +1,29 @@
+# Site settings
+title: 深元博客
+description: > # this means to ignore newlines until "baseurl:"
+    世界那么大, 边写代码边走着
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "https://www.dengshenyu.com" # the base hostname & protocol for your site
+twitter_username: dengshenyu
+github_username: dengshenyu
+
+defaults:
+  -
+    scope:
+      path: _posts/default
+    values:
+      layout: default
+      lang: en
+      permalink: /:categories/:year/:month/:day/:title.html
+  -
+    scope:
+      path: _posts/zh
+    values:
+      layout: default
+      lang: zh
+      permalink: /:categories/:year/:month/:day/:title.html
+
+    # Build settings
+markdown: redcarpet
+redcarpet:
+    extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
