@@ -4,6 +4,8 @@ _theme_packages/*
 Thumbs.db
 .DS_Store
 
+.sass-cache/*
+
 !.gitkeep
 
 .rbenv-version

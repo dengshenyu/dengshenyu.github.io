@@ -1,5 +1,5 @@
 # Site settings
-title: 深元博客
+title: 深元的博客
 description: > # this means to ignore newlines until "baseurl:"
     世界那么大, 边写代码边走着
 baseurl: "" # the subpath of your site, e.g. /blog/
