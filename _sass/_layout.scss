@@ -170,6 +170,15 @@
 
         @include media-query($on-laptop) {
             font-size: 18px;
-        }
-    }
+            }
+	}
 }
+
+
+/**
+ * 评论
+ *
+ .comment #ds-thread {
+	margin: 24px 240px 240px 240px;
+ }
+ */
