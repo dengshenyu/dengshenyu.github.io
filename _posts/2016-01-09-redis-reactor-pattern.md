@@ -16,13 +16,13 @@ Redis中有很多方面都很有意思，在这篇文章中我想探讨的是Red
 
 目录
 
-* [从Redis的工作模式谈起](#从Redis的工作模式谈起)
-* [Reactor模式](#Reactor模式)
-   * [C10K问题](#C10K问题)
-   * [I/O多路复用技术](#I/O多路复用技术)
-   * [Reactor的定义](#Reactor的定义)
-   * [Java中的NIO与Reactor](#Java中的NIO与Reactor)
-* [Redis与Reactor](#Redis与Reactor)
+* [从Redis的工作模式谈起](#从redis的工作模式谈起)
+* [Reactor模式](#reactor模式)
+   * [C10K问题](#c10k问题)
+   * [I/O多路复用技术](#i-o多路复用技术)
+   * [Reactor的定义](#reactor的定义)
+   * [Java中的NIO与Netty](#java中的nio与netty)
+* [Redis与Reactor](#redis与reactor)
 * [总结](#总结)
 * [参考资料](#参考资料)
 
