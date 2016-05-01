@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "云南之旅"
+title: "JMM的happens-before规则"
 keywords: 云南,大理
 description: "云南大理之旅"
 date: 2013-06-03 00:00
