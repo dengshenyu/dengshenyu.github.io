@@ -135,6 +135,7 @@ class MonitorExample {
 
 ![sync](/assets/jmm/sync.png)
 
+
 ## 总结
 
 本文是对happens-before规则的一个分享总结，《深入理解Java内存模型》中还有很多地方值得学习，大家感兴趣的可以研读下！
