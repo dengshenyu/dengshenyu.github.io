@@ -6,6 +6,14 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://www.dengshenyu.com" # the base hostname & protocol for your site
 twitter_username: dengshenyu
 github_username: dengshenyu
+markdown: kramdown
+
+kramdown:
+   input: GFM
+   hard_wrap: false
+gems:
+   - jekyll-coffeescript
+   - jekyll-paginate
 
 defaults:
   -
@@ -24,6 +32,5 @@ defaults:
       permalink: /:categories/:year/:month/:day/:title.html
 
 # Build settings
-markdown: kramdown
 #kramdown:
 #    extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
