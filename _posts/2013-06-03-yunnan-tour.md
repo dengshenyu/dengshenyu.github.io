@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "JMM的happens-before规则"
-keywords: 云南,大理
-description: "云南大理之旅"
+keywords: "Java,JMM,并发"
+description: "JMM的happens-before规则"
 date: 2013-06-03 00:00
-category: 生活
+category: Java
 ---
 
 书读百遍，其义自见，此话不假。
