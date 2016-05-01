@@ -11,7 +11,7 @@ category: Java
 
 对于Java中的内存模型，自己虽然接触过很多遍，但其实认识不够深入。在读了[深入理解Java内存模型](http://www.infoq.com/resource/minibooks/java_memory_model/zh/pdf/think_deep_in_java_mem_model.pdf)之后，对JMM的理解加深了一点。本文主要讨论JMM中的happens-before规则。
 
-我们知道，JMM有如下四条规则：
+我们知道，JMM定义了happens-before规则，包括如下四条：
 
 * 程序顺序规则：一个线程中的每个操作，happens-before于该线程中的任意后续操作
 * 监视器锁规则：对一个监视器的解锁，happens-before于随后对这个监视器的加锁
@@ -60,7 +60,7 @@ category: Java
 
 为了解决线程间的操作可见性问题，JMM定义了一套happens-before规则，我们可以根据这套规则来编程从而得到可预期的结果。
 
-其中有四条happens-before规则如下：
+其中有四条规则如下：
 
 * 程序顺序规则：一个线程中的每个操作，happens-before于该线程中的任意后续操作
 * 监视器锁规则：对一个监视器的解锁，happens-before于随后对这个监视器的加锁
