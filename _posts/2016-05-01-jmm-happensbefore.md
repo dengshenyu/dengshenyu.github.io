@@ -9,7 +9,7 @@ category: Java
 
 书读百遍，其义自见，此话不假。
 
-对于Java中的内存模型，自己虽然接触过很多遍，但其实认识不够深入。在读了[深入理解Java内存模型](http://www.infoq.com/resource/minibooks/java_memory_model/zh/pdf/think_deep_in_java_mem_model.pdf)之后，对JMM的理解加深了一点。本文主要是探讨JMM中的happens-before规则。
+对于Java中的内存模型，自己虽然接触过很多遍，但其实认识不够深入。在读了[深入理解Java内存模型](http://www.infoq.com/resource/minibooks/java_memory_model/zh/pdf/think_deep_in_java_mem_model.pdf)之后，对JMM的理解加深了一点。本文主要讨论JMM中的happens-before规则。
 
 我们知道，JMM有如下四条规则：
 
