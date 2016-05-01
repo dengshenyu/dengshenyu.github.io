@@ -4,7 +4,7 @@ title: "JMM的happens-before规则"
 keywords: Java,并发编程,JMM
 description: "Java的并发编程"
 date: 2016-05-01 15:00
-category: Java
+categories: Java
 ---
 
 书读百遍，其义自见，此话不假。
