@@ -71,7 +71,7 @@ category: Java
 
 我们还是来看个《深入理解Java内存模型》中的例子吧！
 
-```
+{% highlight java %}
 class VolatileExample {
 	int a = 0;
 	volatile boolean flag = false;
@@ -89,7 +89,7 @@ class VolatileExample {
 	}
 }
 
-```
+{% endhighlight %}
 
 假设线程A执行writer()方法**之后**，线程B执行reader()方法，那么线程B执行4的时候一定能看到线程A写入的值吗？注意，a不是volatile变量。
 
@@ -107,7 +107,7 @@ class VolatileExample {
 
 同样的，我们再来看一个锁规则的例子
 
-```
+{% highlight java %}
 class MonitorExample {
 	int a = 0;
 
@@ -121,7 +121,7 @@ class MonitorExample {
 	}                                     //6
 }
 
-```
+{% endhighlight %}
 
 假设线程A执行writer()方法**之后**，线程B执行reader()方法。那么根据happens-before规则，我们可以得到：
 
