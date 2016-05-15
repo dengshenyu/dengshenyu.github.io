@@ -1,0 +1,249 @@
+.ds-sync{display:none !important;}
+ /*隐藏同步*/
+.ds-powered-by{display:none !important;}
+ /*隐藏多说驱动*/
+#ds-thread{ border-radius: 5px;}
+ /*评论框圆角*/
+
+/*隐藏评论框底部渐变背景*/
+#ds-reset .ds-gradient-bg{background:none !important;}
+
+
+/*隐藏评论左上方 评论总数背景色及边框*/
+#ds-thread #ds-reset li.ds-tab a.ds-current{background:none;border:none;}
+
+#ds-thread #ds-reset .ds-sort {display:none;}
+ /*最热隐藏*/
+
+/*隐藏头像 + 隐藏气泡*/
+#ds-reset .ds-avatar {display:none}
+
+#ds-thread #ds-reset .ds-comment-body { padding-left: 0px !important;}
+
+#ds-thread #ds-reset #ds-bubble {display:none !important}
+
+
+/*隐藏有几条评论*/
+#ds-thread #ds-reset .ds-comments-info {display:none}
+
+
+/*评论名称字体*/
+@media screen and (min-width: 768px) {
+#ds-thread #ds-reset .ds-user-name {
+  color: #da4939;
+  font-size: 18px;
+  font-size: 1.125rem;
+  margin-right: 8px;
+}
+
+}
+
+
+/*评论名称字体*/
+@media screen and (max-width: 768px) {
+#ds-thread #ds-reset .ds-user-name {
+  color: #da4939;
+  font-size: 15px;
+  font-size: 0.938rem;
+  margin-right: 8px;
+}
+
+}
+
+
+
+/*评论框左边没有间距*/
+#ds-thread #ds-reset .ds-replybox {
+  padding-left: 0px !important;
+}
+/*
+#ds-thread.ds-narrow #ds-reset .ds-comment-body, #ds-thread.ds-narrow #ds-reset .ds-replybox {
+  padding-left: 0px !important; 
+}
+*/
+
+
+
+/*评论内容间距*/
+#ds-thread #ds-reset .ds-post-self {
+  position: relative;
+  padding: 20px 5px;
+   border-bottom: 1px solid #e6e1dc;
+}
+
+
+@media screen and (min-width: 768px) {
+/*评论内容字体大小*/
+#ds-thread #ds-reset .ds-comment-body p {
+  font-size: 17px;
+  font-size: 1.063rem;
+  line-height: 1.5em;
+  margin: .5em 0;
+  word-wrap: break-word;
+}
+
+}
+
+
+@media screen and (max-width:768px) {
+/*评论内容字体大小*/
+#ds-thread #ds-reset .ds-comment-body p {
+  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.5em;
+  margin: .5em 0;
+  word-wrap: break-word;
+}
+
+}
+
+
+/*评论框宽度*/
+#ds-thread #ds-reset .ds-replybox {
+  width: auto;
+  font-size: 14px;
+  font-size: 0.875rem;
+  z-index: 3;
+  margin: 8px 0;
+  padding: 0 2px 40px 2px;
+  position: relative;
+  _zoom: 1;
+}
+
+
+/*登录按钮取消*/
+#ds-thread #ds-reset .ds-login-buttons {
+  display: none;
+}
+
+
+/*评论边框颜色 + 评论框背景*/
+#ds-thread #ds-reset .ds-textarea-wrapper {
+ position: relative;
+ border: 1px solid #e6e1dc;
+ border-bottom: none;
+ padding-right: 20px;
+ overflow: hidden;
+background:none;
+}
+
+
+/*边框样式*/
+#ds-thread #ds-reset .ds-post-options {
+  position: relative;
+  margin-right: 100px;
+  height: 30px;
+  border: 1px solid #e6e1dc;
+  border-right: none;
+  border-bottom-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+}
+
+
+/*评论按钮样式*/
+#ds-thread #ds-reset .ds-post-button {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 32px;
+  width: 100px;
+  text-align: center;
+  text-shadow: 0 1px 0 #fff;
+  color: #555;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid #e6e1dc;
+  background-color: #eee;
+  background-image:none;
+}
+
+
+/*评论最顶端的评论间距，边框颜色*/
+#ds-thread #ds-reset li.ds-post-placeholder {
+  text-align: center;
+  color: #999;
+  padding: 2.5em 0;
+}
+
+#ds-thread #ds-reset li.ds-post {
+  width: 100%;
+  overflow: hidden;
+  clear: both;
+  border-top: none;
+  margin: 0;
+  list-style: none;
+}
+
+
+/*被顶评论隐藏*/
+#ds-thread #ds-reset #ds-hot-posts {
+  display: none;
+}
+
+
+/*评论最低端的横线隐藏*/
+#ds-thread #ds-reset .ds-comments {
+  width: 100%;
+  border-bottom: none;
+}
+
+
+.ds-comment-body .ds-post-report {
+  display:none;
+}
+
+
+.ds-comment-body .ds-post-repost {
+  display:none;
+}
+
+
+.ds-comment-body .ds-post-likes {
+  display:none;
+}
+
+
+/*弹出评论框多说字样隐藏*/
+.ds-dialog-footer {
+ display:none;
+}
+
+
+/*调整整个弹出评论框阴影*/
+#ds-wrapper #ds-reset .ds-dialog-inner {
+  width: 100%;
+  position: relative;
+  border: none;
+  background: #fff;
+  text-shadow: 0 1px 0 #fff;
+  box-shadow: inset 0 3px 6px #fff,0 1px 5px rgba(0,0,0,0.4);
+}
+
+
+/*弹出评论框输入 form 样式*/
+#ds-wrapper #ds-reset .ds-control-group input {
+  color: #777;
+  width: 100%;
+  font-size: 14px;
+  font-size: 0.875rem;
+  border: 1px solid #e6e1dc;
+  padding: 10px 75px 10px 7px;
+ box-shadow: none; 
+}
+
+
+/*弹出评论框按钮*/
+#ds-wrapper #ds-reset button {
+  cursor: pointer;
+  color: #555;
+  background-color: #eee;
+  background-image: none;
+  border: 1px solid #e6e1dc;
+  display: inline-block;
+  font-size: 15px;
+  font-size: 0.938rem;
+  height: 30px;
+  width: 100px;
+  padding: 0;
+}

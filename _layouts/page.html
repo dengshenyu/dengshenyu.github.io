@@ -1,10 +1,21 @@
 ---
 layout: default
 ---
-<div class="post">
+<article class="post">
 
-  <article class="post-content">
+<!--
+  <header class="post-header">
+  </header>
+-->
+<!--
+  {{%if page.tagline%}}
+  <div class="tagline">
+  <span class="page-title">{{page.title}}</span> <span class="page-tagline"><em>{{page.tagline}}</em></span>
+  </div>
+  {{% endif %}}
+-->
+  <div class="post-content">
     {{ content }}
-  </article>
+  </div>
 
-</div>
+</article>

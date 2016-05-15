@@ -1,28 +1,38 @@
 ---
 layout: default
 ---
-<div class="post">
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
+    <h1 class="post-title" itemprop="name headline"><a class="post-title-link"  href="{{page.url}}">{{ page.title }}</a></h1>
+  <center>  <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time></p>
+    {% if page.author %}
+     <div class="">
+       <center><p ><strong><span class="authorKeyword">Author</span><span class="small-site-title"> <h2 style="letter-spacing: 3px !important;
+       text-transform: uppercase !important;">{{page.author}}</h2></span></strong></p></center>
+
+     </div>
+     {% endif %}
+   </center>
   </header>
 
-  <article class="post-content">
+  <div class="post-content" itemprop="articleBody">
     {{ content }}
 
 	<!-- 多说评论框 start -->
 	<div class="comment">
 		<div class="ds-thread" 
+			 id="ds-thread"
 			 data-thread-key="{{page.id}}" 
 			 data-title="{{page.title}}" 
 			 data-url="{{site.url}}{{site.baseurl}}{{page.url}}">
 		</div>
 	</div>
 	<!-- 多说评论框 end -->
-  </article>
 
-</div>
+  </div>
+
+</article>
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
