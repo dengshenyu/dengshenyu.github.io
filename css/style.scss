@@ -292,7 +292,8 @@ pre {
 
 .post {
   //font-family: "Source Sans Pro";
-  font-family: Georgia, 'Xin Gothic', 'Hiragino Sans GB', 'Droid Sans Fallback', 'Microsoft YaHei', sans-serif;
+  //font-family: Georgia, 'Xin Gothic', 'Hiragino Sans GB', 'Droid Sans Fallback', 'Microsoft YaHei', sans-serif;
+  font-family: "Ubuntu Mono","Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 18px;
   font-weight: 300;
   padding-top: 0;
@@ -576,7 +577,7 @@ pre {
   font-size: 30px;
 
   text-align: center;
-  font-family: "PT Sans";
+  font-family: "Ubuntu Mono","Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: 900;
   @include media-query($on-laptop) {
     font-size: 36px;

@@ -4,7 +4,7 @@ title: "Redis与Reactor模式"
 keywords: Redis,Reactor,Java,I/O多路复用
 description: "Redis,Reactor,Java,I/O多路复用"
 date: 2016-01-09 09:32
-categories: Redis
+categories: "后端技术"
 ---
 
 最近看了[Redis的设计与实现](http://redisbook.com/)，这本书写的还不错，看完后对Redis的理解有很大的帮助。另外，作者整理了一份[Redis源码注释](https://github.com/huangz1990/redis-3.0-annotated)，大家可以clone下来阅读。
@@ -16,18 +16,18 @@ Redis中有很多方面都很有意思，在这篇文章中我想探讨的是Red
 
 目录
 
-* [从Redis的工作模式谈起](#从redis的工作模式谈起)
-* [Reactor模式](#reactor模式)
-   * [C10K问题](#c10k问题)
-   * [I/O多路复用技术](#i-o多路复用技术)
-   * [Reactor的定义](#reactor的定义)
-   * [Java中的NIO与Netty](#java中的nio与netty)
-* [Redis与Reactor](#redis与reactor)
-* [总结](#总结)
-* [参考资料](#参考资料)
+* [从Redis的工作模式谈起](#workmode)
+* [Reactor模式](#reactormode)
+   * [C10K问题](#c10k)
+   * [I/O多路复用技术](#iomulti)
+   * [Reactor的定义](#reactor)
+   * [Java中的NIO与Netty](#nio)
+* [Redis与Reactor](#redisreactor)
+* [总结](#summary)
+* [参考资料](#refer)
 
 
-## 从Redis的工作模式谈起
+## <a name="workmode"></a>从Redis的工作模式谈起
 
 我们在使用Redis的时候，通常是多个客户端连接Redis服务器，然后各自发送命令请求(例如Get、Set)到Redis服务器，最后Redis处理这些请求返回结果。
 
@@ -39,9 +39,9 @@ Redis中有很多方面都很有意思，在这篇文章中我想探讨的是Red
 
 当然，Redis除了处理客户端的命令请求还有诸如RDB持久化、AOF重写这样的事情要做，而在做这些事情的时候，Redis会fork子进程去完成。但对于accept客户端连接、处理客户端请求、返回命令结果等等这些，Redis是使用主进程及主线程来完成的。我们可能会惊讶Redis在使用单进程及单线程来处理请求为什么会如此高效？在回答这个问题之前，我们先来讨论一个I/O多路复用的模式--Reactor。
 
-## Reactor模式
+## <a name="reactormode"></a>Reactor模式
 
-### C10K问题
+### <a name="c10k"></a>C10K问题
 
 考虑这样一个问题：有10000个客户端需要连上一个服务器并保持TCP连接，客户端会不定时的发送请求给服务器，服务器收到请求后需及时处理并返回结果。我们应该怎么解决?
 
@@ -63,7 +63,7 @@ Redis中有很多方面都很有意思，在这篇文章中我想探讨的是Red
 
 答案是肯定的，而且不必轮询。我们可以通过I/O多路复用技术来解决这个问题。
 
-### I/O多路复用技术
+### <a name="iomulti"></a>I/O多路复用技术
 
 现代的UNIX操作系统提供了select/poll/kqueue/epoll这样的系统调用，这些系统调用的功能是：你告知我一批套接字，当这些套接字的可读或可写事件发生时，我通知你这些事件信息。
 
@@ -138,7 +138,7 @@ int kevent(int kq, const struct kevent *changelist, int nchanges, struct kevent 
 
 epoll和kqueue解决了select存在的问题。通过它们，我们可以高效的通过系统调用来获取多个套接字的读/写事件，从而解决一个线程处理多个连接的问题。
 
-### Reactor的定义
+### <a name="reactor"></a>Reactor的定义
 
 通过select/poll/epoll/kqueue这些I/O多路复用函数库，我们解决了一个线程处理多个连接的问题，但整个Reactor模式的完整框架是怎样的呢？参考[这篇paper](http://www.dre.vanderbilt.edu/~schmidt/PDF/reactor-siemens.pdf)，我们可以对Reactor模式有个完整的描述。
 
@@ -177,13 +177,13 @@ epoll和kqueue解决了select存在的问题。通过它们，我们可以高效
 通过以上的叙述，我们清楚了Reactor的大概框架以及涉及到的底层I/O多路复用技术。
 
 
-### Java中的NIO与Netty
+### <a name="nio"></a>Java中的NIO与Netty
 
 谈到Reactor模式，在这里奉上Java大神Doug Lea的[Scalable IO in Java](http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf)，里面提到了Java网络编程中的经典模式、NIO以及Reactor，并且有相关代码帮助理解，看完后获益良多。
 
 另外，Java的NIO是比较底层的，我们实际在网络编程中还需要自己处理很多问题（譬如socket的读半包），稍不注意就会掉进坑里。幸好，我们有了[Netty](http://netty.io/)这么一个网络处理框架，免去了很多麻烦。
 
-## Redis与Reactor
+## <a name="redisreactor"></a>Redis与Reactor
 
 在上面的讨论中，我们了解了Reactor模式，那么Redis中又是怎么使用Reactor模式的呢？
 
@@ -216,12 +216,12 @@ int main(int argc, char **argv) {
 在initServer()中，建立各个事件处理器；在aeMain()中，执行事件处理循环；在aeDeleteEventLoop(server.el)中关闭停止事件处理循环；最后退出。
 
 
-## 总结
+## <a name="summary"></a>总结
 
 在这篇文章中，我们从Redis的工作模型开始，讨论了C10K问题、I/O多路复用技术、Java的NIO，最后回归到Redis的Reactor模式中。如有纰漏，恳请大家指出，我会一一加以勘正。谢谢！
 
 
-## 参考资料
+## <a name="refer"></a>参考资料
 
 * [The C10K problem](http://www.kegel.com/c10k.html)
 * [Scalable Event Multiplexing: epoll vs. kqueue](http://www.eecs.berkeley.edu/~sangjin/2012/12/21/epoll-vs-kqueue.html)

@@ -5,16 +5,13 @@ permalink: /about/
 ---
 
 
-
-
-
-## About me
+### About me
 
 Bachelor, Sun Yat-sen University
 
 Back-end engineer, Meituan.com
 
-## Contact me
+### Contact me
 
 * [Github](https://github.com/dengshenyu)
 * [Email](mailto:dengshenyu@gmail.com)

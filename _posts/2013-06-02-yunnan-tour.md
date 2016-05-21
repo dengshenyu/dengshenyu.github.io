@@ -4,7 +4,7 @@ title: "云南之旅"
 keywords: 云南,大理
 description: "云南大理之旅"
 date: 2013-06-02 00:00
-category: 生活
+categories: "生活"
 ---
 
 不知怎的，忽然想起了那一个餐馆，以及餐馆的老板和老板娘。

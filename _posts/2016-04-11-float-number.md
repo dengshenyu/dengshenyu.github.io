@@ -4,7 +4,7 @@ title: "谈谈浮点数"
 keywords: Float,浮点数,Java
 description: "谈谈浮点数"
 date: 2016-04-11 11:52
-categories: Computer_Science
+categories: "计算机科学"
 ---
 
 之前看了Ruby创造者写的[松本行弘的程序世界](https://book.douban.com/subject/6756090/)，一直懒得整理。现在对里面的一些知识做下记录，同时希望能帮助到大家。

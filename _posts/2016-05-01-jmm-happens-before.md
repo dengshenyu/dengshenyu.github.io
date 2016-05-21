@@ -4,7 +4,7 @@ title: "JMM的happens-before规则"
 keywords: "Java,JMM,并发"
 description: "JMM的happens-before规则"
 date: 2016-05-01 00:00
-category: Java
+categories: "后端技术"
 ---
 
 书读百遍，其义自见，此话不假。
