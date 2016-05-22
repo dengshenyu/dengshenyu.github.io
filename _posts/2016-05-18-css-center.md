@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "CSS的居中问题"
-keywords: "CSS,Center"
+keywords: "CSS,Center,居中"
 description: "CSS居中，Center"
 date: 2016-05-18 00:00
 categories: "前端技术"
