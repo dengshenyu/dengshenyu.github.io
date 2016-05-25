@@ -9,7 +9,7 @@ permalink: /about/
 
 Bachelor, Sun Yat-sen University
 
-Back-end engineer, Meituan.com
+Had worked at Yahoo! and Umeng, and now working for Meituan.com as a back-end engineer.
 
 ### Contact me
 
