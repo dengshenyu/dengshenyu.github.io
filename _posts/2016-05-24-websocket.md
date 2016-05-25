@@ -9,60 +9,73 @@ categories: "后端技术"
 
 ## WebSocket介绍
 
-WebSocket协议[RFC 6455](https://tools.ietf.org/html/rfc6455)为Web应用定义了一种新的通信方式：client与server间全双工，双向的通信。在漫长的技术发展史上，我们为了使web的交互性更好使用了Java Applets，XMLHttpRequest，Adobe Flash，ActiveXObject，Comet等技术，但是WebSocket的出现是一种新的令人激动的可能性。
+在相当长的一段时间里面，我们为了web页面具有良好的交互及实时性，采用了Long Polling，Server Sent Events，Comet等技术，这些技术在特定场景下都能解决问题，但[WebSocket](https://tools.ietf.org/html/rfc6455)的出现提供了一种新的可能性。WebSocket是HTML5定义的一种协议，这种协议可以实现client与server间全双工、双向的通信。
 
-本文不讨论WebSocket的协议，但是我们得知道一个前提：WebSocket开始有个handshake，而这个handshake是使用HTTP完成的。准确的说，这个handshake依赖于HTTP中的[协议升级机制](https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism)，当服务器收到这个协议升级请求后如果接受则返回HTTP状态码101。handshake成功后，HTTP协议升级请求所使用的TCP连接会保持open状态，然后client与server会使用它来相互发送消息。
+我们知道，目前的Web服务绝大部分都是基于HTTP的，因此为了使得WebSocket能够被广泛使用，WebSocket决定使用HTTP来作为初始的握手（handshake）。WebSocket的握手基于HTTP中的[协议升级机制](https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism)，当服务端收到这个HTTP的协议升级请求后，如果支持WebSocket协议则返回HTTP状态码101。这样，WebSocket的握手便成功了，之后client与server会使用之前HTTP请求所使用的TCP连接来相互发送消息。
 
-可以看下这个关于WebSocket的[知乎回答](https://www.zhihu.com/question/20215561)。
+这个关于WebSocket的[知乎回答](https://www.zhihu.com/question/20215561)解释的比较有趣，感兴趣的可以看下，本文对于WebSocket的具体协议不做展开。
 
-## WebSocket子协议
+## WebSocket的子协议
 
-目前的Web应用广泛采用了REST架构，即基于URL以及HTTP方法（GET、PUT、POST、DELETE）。但WebSocket应用有所不同，它只使用一个URL来建立最初的HTTP handshake，一旦握手成功后所有的消息通信都直接基于底层的TCP连接。这种异步的、事件驱动的消息通信架构和REST完全不同。
+如上所述，WebSocket在握手之后便直接基于TCP进行消息通信，但WebSocket只是TCP上面非常轻的一层，它仅仅将TCP的字节流转换成消息流（文本或二进制），至于怎么解析这些消息的内容完全依赖于应用本身。
 
-WebSocket的确有这么一个**消息通信架构**，但是并不限制具体的消息通信协议。WebSocket只是TCP上面很轻的一层，它只是将TCP的字节流转换成消息流（文本或二进制），仅此而已。对于怎么解析消息流的内容，完全依赖于应用本身。
+因此为了协助client与server进行消息格式的协商，WebSocket在握手的时候保留了一个[子协议](https://tools.ietf.org/html/rfc6455#section-1.9)字段。
 
-如果一个framework或者container使用了WebSocket，在WebSocket协议中是没有足够的信息指明到来的消息应该怎么被路由或者处理。因此WebSocket对于简单应用还好，但对于其他复杂点的的确太底层了，即便可以使用，但需要我们自顶向下定义一个框架。
+这个子协议字段并不是必须的，而且这个字段的值也不是固定的。对于简单的应用，我们完全可以自己约定消息的格式；但对于稍微复杂点的应用，我们可能会希望能够希望快速开发，而不用花费大部分精力来制定复杂的消息格式。
 
-基于这个原因，WebSocket RFC定义了[子协议](https://tools.ietf.org/html/rfc6455#section-1.9)。在handshake的过程中，client与server可以使用**Sec-WebSocket-Protocol**来协商一个子协议。子协议不是必须使用的，但即便不使用，应用仍然需要定义一个client与server能够通信的消息格式。这个格式可以是自定义的，或者是基于具体框架的，又或者是一个标准的消息通信协议。
+那么问题来了：现在有可用的子协议吗？
 
-Spring框架提供了[STOMP](http://stomp.github.io/stomp-specification-1.2.html#Abstract)的支持，这是一个简单的消息通信协议，最初只是在脚本语言中使用，但今天已经被广泛支持而且非常适合在WebSocket中使用。
+答案是肯定的。
+
+[STOMP](http://stomp.github.io/stomp-specification-1.2.html#Abstract)协议是一个简单的消息通信协议，最初只是在脚本语言中使用，但由于其简单实用已经被广泛使用。
+
+我们也可以在WebSocket中将它作为子协议来进行消息通信。
+
+对于Java开发者来说，由于Spring框架提供了STOMP的支持，可以拿来就用，没有比这更好的了。
+
 
 ## <a name="spring-stomp"></a>Spring与STOMP
 
-本文不讨论STOMP的具体协议，但对于STOMP的三种消息需要了解：
+STOMP中定义了三种消息：
 
 1. SEND：client向server发送消息
 2. SUBSCRIBE：client向server订阅某种类型的消息
 3. MESSAGE：server向client分发消息
 
-Spring的spring-messaging模块支持STOMP协议，同时还包含了很多消息处理的关键抽象，下面是一个简单的消息处理示意图：
+Spring的spring-messaging模块支持STOMP协议，包含了消息处理的关键抽象。下面是一个简单的消息处理示意图：
 
 ![message-flow](/assets/websocket/message-flow.png)
 
-* Message：消息，带有header和payload。
-* MessageHandler：处理client消息的抽象。
-* MessageChannel：解耦消息发送者与消息接收者的抽象。举个例子，client可以发送消息到channel，而不用管这条消息最终被谁处理。
-* Broker：存放消息的中间件。
+关键实体的作用如下：
+
+* Message：消息，里面带有header和payload。
+* MessageHandler：处理client消息的实体。
+* MessageChannel：解耦消息发送者与消息接收者的实体。举个例子，client可以发送消息到channel，而不用管这条消息最终被谁处理。
+* Broker：存放消息的中间件，client可以订阅broker中的消息。
 
 
-## 浏览器兼容性问题及解决方案
+## WebSocket的浏览器兼容性问题
 
-但是WebSocket在实践上仍然很有挑战，原因在于相当一部分浏览器不支持WebSocket协议。IE浏览器支持WebSocket的版本是IE10。。。另外，一些受限的代理也可能会禁止HTTP的协议升级或者强制断开连接时间过长的TCP。
+关于WebSocket的另外一个问题是，目前相当一部分浏览器不支持WebSocket协议，譬如IE浏览器只在IE10或者更高版本支持WebSocket。另外，一些受限的代理也可能会禁止HTTP的协议升级，从而阻碍WebSocket的握手与使用。
 
-因此，在建立一个WebSocket应用的时候，我们会对于支持WebSocket的浏览器使用WebSocket来通信；对于不支持WebSocket的浏览器，我们仍然希望使用类似于WebSocket的API，这样我们的程序完全不用变，而底层的通信则使用其他的方式来实现。
+因此我们在计划使用WebSocket的时候，需要考虑兼容性问题。在不能使用WebSocket的场景下，我们希望client与server仍然可以通过其他方式通信。
 
-[SocketJS](https://github.com/sockjs/sockjs-protocol)是一个解决方案，它包含了client端及server端完整的实现，它所提供的跨浏览器并且保持一致的API使得我们能够在快速开发的同时具有很好的浏览器兼容性。
+这样的话我们写代码的时候岂不是非常困难？因为我们既需要实现WebSocket，同时还需要对于不支持WebSocket的client实现其他方式的通信（例如Long Polling）？
+
+幸运的是，我们拥有[SockJS](https://github.com/sockjs/sockjs-protocol)这么一个解决方案，它向上层暴露一致的WebSocket API，但具体实现会因浏览器而异。SockJS涉及到client端以及server端的实现，client端使用SockJS-client.js，而服务端则根据语言使用各自的SockJS实现。
+
+而Spring中已经集成了SockJS，我们只需要一行代码就可以引入SockJS了。是不是很赞？
 
 ## <a name="code"></a>Talk is cheap, show Me the code
 
-我们来动手写个小demo吧。在写demo之前，需要准备下环境：
+啰嗦了那么多，我们来动手写个小demo吧！这个demo需要准备以下环境：
 
 * JDK 1.8+
 * Maven 3.0+
 
-首先，创建根目录**messaging-stomp-websocket**。
+首先，创建根目录 **mkdir messaging-stomp-websocket**。
 
-然后创建pom.xml：
+然后在根目录下创建pom.xml：
 
 {% highlight xml %}
 
@@ -109,9 +122,12 @@ Spring的spring-messaging模块支持STOMP协议，同时还包含了很多消�
 
 {% endhighlight %}
 
-现在我们来写server端的代码，首先使用**mkdir -p src/main/java/hello**来建立层级目录。
 
-在这个demo中，client与server通信的消息体使用JSON格式，client向server发送包含名字的消息：
+我们先来写server端的代码。
+
+在根目录下使用**mkdir -p src/main/java/hello**来建立层级目录。
+
+在这个demo中，client会向server发送包含名字的JSON格式的消息：
 
 {% highlight json %}
 
@@ -121,7 +137,7 @@ Spring的spring-messaging模块支持STOMP协议，同时还包含了很多消�
 
 {% endhighlight %}
 
-sever收到消息后，返回欢迎的消息：
+sever收到消息后，返回表示欢迎的消息：
 
 {% highlight json %}
 
@@ -131,7 +147,7 @@ sever收到消息后，返回欢迎的消息：
 
 {% endhighlight %}
 
-我们分别用两个POJO（Plain Old Java Object）来表示：
+在server端，我们分别用两个POJO（Plain Old Java Object）来表示这两种消息：
 
 **src/main/java/hello/HelloMessage.java**：
 
@@ -174,7 +190,7 @@ public class Greeting {
 {% endhighlight %}
 
 
-我们创建一个消息处理的controller，这个controller用来处理client发送到“/hello”的STOMP消息。
+现在我们创建一个消息处理的controller，当client发送到“/hello”的STOMP消息，我们会交给这个controller来处理。和Spring MVC里面的请求dispatch一样。
 
 **src/main/java/hello/GreetingController.java**：
 
@@ -201,10 +217,12 @@ public class GreetingController {
 
 {% endhighlight %}
 
-* @MessageMapping表明一个消息被发送到“/hello”时，这个方法会被调用处理该消息。
-* @SendTo表明greeting方法处理完后，会发送一个Greeting的消息到“/topic/greetings”这个broker。
+需要注意的是：
 
-最后创建Spring配置来使用WebSocket以及STOMP消息通信。
+* @MessageMapping表明一个消息被发送到“/hello”时，这个方法会被调用处理该消息。
+* @SendTo表明这个方法处理完后所产生的值会被作为消息发送到“/topic/greetings”这个broker。
+
+最后创建Spring配置类来完成WebSocket、STOMP以及SockJS的配置。
 
 **src/main/java/hello/WebSocketConfig.java**：
 
@@ -237,15 +255,16 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 {% endhighlight %}
 
+需要注意的是：
+
 * @Configuration表明这是一个Spring的配置类。
 * @EnableWebSocketMessageBroker表明启用WebSocket消息中间件，以及WebSocket消息处理。
-* configureMessageBroker()方法用来配置消息中间件，它通过调用enableSimpleBroker()来使用一个基于内存的消息中间件，这个中间件放置所有需要返回给client的以“/topic”为前缀的消息。同时它为@MessageMapping标记的方法所绑定的消息设置了一个“/app”的消息前缀。
-* registerStompEndpoints()方法注册了一个“/hello”的endpoint，同时使用了SockJS。client端建立WebSocket连接的时候是基于endpoint的。
+* configureMessageBroker()方法用来配置消息中间件，它通过调用enableSimpleBroker()来创建一个基于内存的消息中间件，这个消息中间件会接收所有需要返回给client的以“/topic”为前缀的消息。同时configureMessageBroker()方法还为@MessageMapping标记的方法所绑定的消息设置了一个“/app”的消息前缀。
+* registerStompEndpoints()方法注册了一个“/hello”的endpoint，同时使用了SockJS。这表明client需要使用SockJS来连接这个endpoint。
 
+至此server端已经完成。下面我们写一个简易的client。
 
-下面我们写一个简易的client。
-
-首先，使用**mkdir -p src/main/resources/static/**来建立层级目录。
+首先，使用**mkdir -p src/main/resources/static/**来建立client端目录。
 
 然后，由于我们需要用到SockJS以及STOMP，因此我们需要下载[sockjs-0.3.4.js](http://cdn.sockjs.org/sockjs-0.3.4.js)以及[stomp.js](https://raw.githubusercontent.com/jmesnil/stomp-websocket/master/lib/stomp.js)，并放在src/main/resources/static/目录下。
 
@@ -324,11 +343,10 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 {% endhighlight %}
 
-* 这个页面关键的JS代码在于connect()方法和sendName()方法，connect()方法建立WebSocket连接，成功之后向server端订阅“/topic/greetings”的消息。sendName()方法则向server端发送消息。
-* 通过这个页面可以看到，Stomp是基于SockJS之上的，SocketJS向Stomp提供了WebSocket的API，但实际上会根据浏览器对WebSocket的支持程度来具体实现。
+* 这个页面关键的JS代码在于connect()方法和sendName()方法，connect()方法用来建立WebSocket连接，成功之后则向server端订阅“/topic/greetings”的消息。sendName()方法用来向server端发送消息。
+* 通过这个页面可以看到，SocketJS提供了WebSocket的API，STOMP可以像使用WebSocket一样使用SockJS对象，但实际上SockJS会根据浏览器来不同实现，可能并没有使用WebSockJS来和server通信。
 
-
-至此，我们代码已经基本写完了！我们来运行下吧！写一个运行类：
+至此，我们代码已经基本写完了！我们来运行下，写一个运行类：
 
 **src/main/java/hello/Application.java**：
 
@@ -353,11 +371,4 @@ public class Application {
 
 ![run](/assets/websocket/run.png)
 
-
-## 总结
-
-本文介绍了一些Spring与WebSocket的相关知识，主要参考了[Spring的WebSocket文档](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/websocket.html)以及[Spring的WebSocket实践](https://spring.io/guides/gs/messaging-stomp-websocket/)。
-
-原文描述的更加完整以及具体，感兴趣的同学可以继续阅读。
-
-
+撒花~~
