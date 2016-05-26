@@ -372,3 +372,9 @@ public class Application {
 ![run](/assets/websocket/run.png)
 
 撒花~~
+
+
+## 参考资料
+
+* [Spring WebSocket Support](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/websocket.html)
+* [Using WebSocket to build an interactive web application](https://spring.io/guides/gs/messaging-stomp-websocket/)
