@@ -33,6 +33,24 @@ h2 { text-align: center }
 
 ![lines-align](/assets/css-center/lines-align.png)
 
+另外一种情况是，文本处于div中，而div具有一定的高度，那么我们除了设置**text-align**之外还需要设置行高与div高度一样，类似于这样：
+
+{% highlight html %}
+
+div {
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+    text-align: center;
+}
+...
+<div>
+    Hello World!
+</div>
+
+{% endhighlight %}
+
+
 ## 块或者图片的水平居中
 
 有时候不仅仅是文本需要居中，而是一个块需要居中。换另一种描述：我们想块的左边距和右边距相同。解决的办法是将这些边距设置成auto。如果块的宽度是固定的话这种做法是很常用的，但如果块本身是大小可变的话这个块会占满整个可用宽度，从而失效。
