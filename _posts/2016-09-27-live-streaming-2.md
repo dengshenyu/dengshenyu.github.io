@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "动手实现直播(二)"
+title: "直播技术技术实现(二)"
 keywords: "直播,rtmp,nginx,live-streaming"
 description: "动手实现直播"
 date: 2016-09-05 17:00
