@@ -4,7 +4,7 @@ title: "【译】Spring依赖注入之@Inject，@Autowired，@Resource"
 keywords: "Java,Spring"
 description: "Spring依赖注入之@Inject，@Autowired，@Resource"
 date: 2016-10-09 00:00
-categories: "后端技术,Java,Spring"
+categories: "Spring"
 ---
 
 
