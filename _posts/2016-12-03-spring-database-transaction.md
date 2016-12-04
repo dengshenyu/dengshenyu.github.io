@@ -9,7 +9,24 @@ categories: ["Java", "Spring"]
 
 数据库是项目开发过程中必不可少的一个组件，而数据库事务则是核心流程中经常使用的一种技术。我们来聊一聊Spring中与数据库事务相关的一些技术细节。
 
-## 事务性质
+目录
+
+* [事务性质](#transactionProperty)
+* [事务隔离级别](#isolation)
+   * [脏读](#dirtyRead)
+   * [不可重复读](#nonRepeatableRead)
+   * [幻读](#phantomRead)
+   * [隔离级别与读现象](#isolationAndRead)
+* [Spring数据库事务抽象](#abstraction)
+* [Spring数据库事务使用](#use)
+   * [基于xml的事务配置](#xmlBased)
+   * [基于注解的事务配置](#annotationBased)
+   * [事务属性配置](#propertyConfig)
+      * [事务回滚](#rollback)
+      * [事务传播](#propagation)
+* [总结](#summary)
+
+## <a name="transactionProperty"></a>事务性质
 
 首先我们来看下数据库事务的基本性质，概括起来即ACID性质：
 
@@ -21,7 +38,7 @@ categories: ["Java", "Spring"]
 
 * 持久性(Durability)：事务完成后，改变是永久的。也就是说，事务成功提交后，它的操作无论如何都不会被**撤销**。
 
-## 事务隔离级别
+## <a name="isolation"></a>事务隔离级别
 
 我们先了解下几个读现象：脏读、不可重复读、幻读。
 
@@ -33,7 +50,7 @@ categories: ["Java", "Spring"]
 | 2 | Jill | 25 |
 
 
-### 脏读
+### <a name="dirtyRead"></a>脏读
 
 脏读指一个事务能够读到其他事务还没提交的操作。
 
@@ -44,7 +61,7 @@ categories: ["Java", "Spring"]
 
 事务2改变了数据但还**没有**提交，这时候事务1读到了事务2还没有提交的数据。假如事务2回滚了，那么事务1看到的数据视图是错误的。
 
-### 不可重复读
+### <a name="nonRepeatableRead"></a>不可重复读
 
 不可重复读指在一个事务执行过程中，一行记录被读取两次但在这两次读取中这行记录的数据不相同。
 
@@ -54,7 +71,7 @@ categories: ["Java", "Spring"]
 
 例子中事务2成功提交，意味着它对id为1的记录的改动生效。而对于事务1来说，它在两次读取中看到了该记录不同的age值。
 
-### 幻读
+### <a name="phantomRead"></a>幻读
 
 幻读指在一个事务执行过程中，有两次相同的查询，但第二次看到数据集合比第一次多，看到了幽灵般出现的新数据。
 
@@ -66,7 +83,7 @@ categories: ["Java", "Spring"]
 
 这里我们对**不可重复读**和**幻读**加以区分：**不可重复读**指事务原先所读到的数据被修改或删除了，不可重复读取；而**幻读**则指事务在执行相同查询时读到了新增加的数据，读到幻象般出现的数据。
 
-### 隔离级别与读现象
+### <a name="isolationAndRead"></a>隔离级别与读现象
 
 隔离级别从弱到强可以分为四个等级，Read Uncommitted、Read Committed、Read Repeatable和Serializable。
 
@@ -77,7 +94,7 @@ categories: ["Java", "Spring"]
 从上图可以看出，Read Uncommitted隔离程度最弱，三种读现象都可能发生；而Serializable隔离程度最强，这三种读现象都不会发生。
 
 
-## Spring数据库事务抽象
+## <a name="abstraction"></a>Spring数据库事务抽象
 
 在对Spring数据库事务做进一步讨论前，我们先通过Spring的一个事务管理接口了解事务整体抽象：
 
@@ -130,13 +147,13 @@ public interface PlatformTransactionManager {
 
 {% endhighlight  %}
 
-## Spring数据库事务
+## <a name="use"></a>Spring数据库事务使用
 
 了解了一个整体抽象后，现在我们来研究怎么启用Spring数据库事务。
 
 我们可以通过**代码编程方式**和**声明方式**来使用Spring数据库事务，但在大多数情况下都使用声明方式来使用事务，因此这里只讨论声明方式的具体细节。
 
-### 基于xml的事务配置
+### <a name="xmlBased"></a>基于xml的事务配置
 
 在实际配置前，我们先了解下Spring实现声明式事务的整体框架。
 
@@ -268,7 +285,7 @@ advice、advisor、pointcut这些概念理解起来有点晕？
 在具体实现上，通过以上声明配置Spring其实对**FooService**包装了一个AOP代理，该AOP代理配置使用了相应事务advice。当我们调用**FooService**的方法时，其实调用了该AOP代理，代理创建使用事务，并标识成事务只读，最终调用**FooService**的方法。
 
 
-### 使用注解@Transactional方式
+### <a name="annotationBased"></a>基于注解的事务配置
 
 上面介绍了使用xml声明方式来使用事务，我们也可以使用基于注解的方式。
 
@@ -328,7 +345,7 @@ public class DefaultFooService implements FooService {
 可以看到，这种基于注解的事务方式比上面基于xml的事务方式少了AOP配置，我们只需要另外增加一行**\<tx:annotation-driven .../>**就可以了。
 
 
-### 事务属性配置
+### <a name="propertyConfig"></a>事务属性配置
 
 无论基于xml还是基于注解，事务属性除了是否只读还有其他一些属性。上面配置中我们没有具体指明这些属性值，其实是使用了这些属性的默认值：
 
@@ -357,7 +374,7 @@ public class DefaultFooService implements FooService {
 
 其中，Rollback(rollback-for、no-rollback-for)和Propagation有些细节需要额外注意，下面做些探讨。
 
-#### 事务回滚(Rollback)
+#### <a name="rollback"></a>事务回滚(Rollback)
 
 Spring建议的做法是，我们通过抛出异常方式来回滚事务。当抛出异常时，Spring事务框架会捕获异常，决定是否回滚事务，然后再重新抛出该异常。
 
@@ -386,7 +403,7 @@ Spring建议的做法是，我们通过抛出异常方式来回滚事务。当�
 
 <br>
 
-#### 事务传播(Propagation)
+#### <a name="propagation"></a>事务传播(Propagation)
 
 事务传播指的是，多个使用事务的方法存在相互调用时，各自的事务是怎么相互影响的。
 
@@ -416,7 +433,7 @@ Spring建议的做法是，我们通过抛出异常方式来回滚事务。当�
 但我们调用方法1时，创建一个新事务；当方法1调用方法2时，会挂起方法1中的事务，创建一个新事务并执行。当方法2返回时，方法2的事务提交或回滚；当方法1返回时，方法1的事务提交或回滚。方法1和方法2的事务相互独立不受相互影响。
 
 
-## 总结
+## <a name="summary"></a>总结
 
 本文从数据库事务性质到Spring数据库事务支持进行了一些技术探讨，如有纰漏恳请指出。
 
