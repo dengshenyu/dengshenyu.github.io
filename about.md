@@ -5,13 +5,13 @@ permalink: /about/
 ---
 
 
-### About me
+### 关于我
 
-Bachelor, Sun Yat-sen University
+白云山高，珠江水长。
 
-Had worked at Yahoo! and Umeng, and now working for Meituan.com as a back-end engineer.
+一枚喜欢折腾的伪90后码农/咖啡因中毒患者/强迫症未完全体/伪文艺青年。
 
-### Contact me
+### 联系我
 
-* [Github](https://github.com/dengshenyu)
-* [Email](mailto:dengshenyu@gmail.com)
+* [Github地址](https://github.com/dengshenyu)
+* [Gmail邮箱](mailto:dengshenyu@gmail.com)
