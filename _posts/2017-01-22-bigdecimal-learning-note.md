@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "BigDecimal学习笔记之double转BigDecimal"
+title: "BigDecimal学习笔记之Double转BigDecimal"
 keywords: "Java,BigDecimal,浮点数"
 description: "BigDecimal学习笔记"
 date: 2017-01-22 18:00
@@ -15,7 +15,7 @@ public BigDecimal(double val);
 
 {% endhighlight %}
 
-它是将一个double类型的数据转换成BigDecimal。double内部使用64bit来表示一个数，这样空间效率极高，但牺牲了精度；而BigDecimal内部使用BigInteger来存储有效数，同时记录precision（精度，即有效位数）和scale（小数位范围），因此不存在精度丢失的情况但空间效率较差。double和BigDecimal都有其使用的场景，没有绝对好坏。
+它是将一个double类型的数据转换成BigDecimal。double内部使用64bit来表示一个数，这样空间效率极高，但牺牲了精度；而BigDecimal内部使用BigInteger来存储有效数，不存在精度丢失的情况但空间效率较差。double和BigDecimal都有其使用的场景，没有绝对好坏。
 
 下面是这个方法的内部实现源码：
 
@@ -131,23 +131,21 @@ exponent -= 1075;
 
 这几步是解析64bit的double数据，将其分成三部分：sign（符号），exponent（指数）和significand（有效数）。上面四条语句执行完后，double所代表的数值等于（sign * significand * 2<sup>exponent</sup>）。第一和第二行代码根据位置直接获取sign和exponent，但是第三和第四条语句对significand和exponent做了一些处理，这里我们主要理解后两条语句。
 
-double使用科学技术法来表示数据，如下所示：
+double内部使用科学技术法来表示数据，如下所示：
 
 ![double-rep1](/assets/bigdecimal-learning-note/double-represent-1.png)
 
-exponent bias为指数偏移值（1023）。这个是什么东西？上面说到，double的指数位有11位，这11位表示了一个无符号整数。实际的指数值需要将其减去指数偏移值（1023）得到。
+sign为符号位，exponent为指数。exponent bias为指数偏移值（1023），这个是什么东西？double的指数位exponent有11位，这11位表示了一个无符号整数。实际的指数值需要将其减去指数偏移值（1023）得到。
 
 举个例子，假如这11位十六进制为#400，即十进制的1024。那么这个double的指数实际为1024 - 1023 = 1。
 
-那1.fraction又是怎么来的呢？其实1.fraction是由significand（有效数）得来的。对于一个只包含0和1的二进制数，我们总可以通过科学计数法将其化成1.xxx格式的有效数（当然0除外），因此为了增加表示double的表示范围，我们可以省略最高位1的存储，只存储小数部分，也就是52位significand。
+那1.fraction又是怎么来的呢？其实1.fraction是由double的52位有效数得来的。对于一个只包含0和1的二进制数，我们总可以通过科学计数法将其化成1.xxx格式的有效数（当然0除外），因此为了增加表示double的表示范围，我们可以省略最高位1的存储，只存储小数部分，也就是52位的有效数。
 
-上面说的double科学计数法表示还不完整。
-
-当指数部分为最小值#000时，double的科学技术表示为如下所示：
+而指数部分为最小值#000时，double的科学技术表示为如下所示：
 
 ![double-rep2](/assets/bigdecimal-learning-note/double-represent-2.png)
 
-上面的1.fraction变成了0.fraction。虽然咋一看不太优美，其实很合理，要不然数字0怎么用double表示呢？
+上面的1.fraction变成了0.fraction。虽然直观上觉得这种特殊情况处理不太优美，但想想也在情理之中，要不然数字0怎么用double表示呢？
 
 背景知识已说完，我们来看下上面的第三条语句：
 
@@ -159,7 +157,7 @@ long significand = (exponent == 0
 
 {% endhighlight %}
 
-这条语句表达的意思就是：当指数部分为0时，以0.fraction方式取出有效数；当指数部分不为0时，以1.fraction方式取出有效数。此外，我们希望significand保存的是一个整数，那我们只需在科学计数法中将指数部分减去52，significand就可以化整了。
+这条语句表达的意思就是：当指数部分为0时，以0.fraction方式取出有效数；当指数部分不为0时，以1.fraction方式取出有效数。此外，我们希望significand保存的是一个整数，我们只需在科学计数法中将指数部分再减去52，significand存储的数据就可以看做是整数了。
 
 这也就是第四行代码表达的意思：
 
@@ -169,7 +167,7 @@ exponent -= 1075;
 
 {% endhighlight %}
 
-1075 = 1023 + 52，也就是指数部分减去指数偏移值和significand化整的52。
+1075 = 1023 + 52，也就是指数部分减去指数偏移值和用于化整的52。
 
 
 至此，代码最难理解（个人认为）的一部分已经解构完毕。这几行代码使用了sign、exponent和significand来表示double所代表的数据，即：
@@ -239,12 +237,13 @@ if (exponent == 0) {
 
 * exponent等于0时，判断了compactVal（即sign * significand）的值是否等于INFLATED（即Long.MIN_VALUE）。但其实这个判断永远为false，因为根据之前的计算此处significand不会超过53位数，因此sign * significand无论如何也不可能等于Long.MIN_VALUE。
 
-* exponent小于0时，sign * significand * 2<sup>exponent</sup>表示一个小数，代码采取了有效数化整、增加小数位的方法，有效数设为5<sup>-exponent</sup> * sign * significand，小数位增加-exponent位。这是为什么呢？计算过程如下（数学渣，求轻拍）：
+* exponent小于0时，sign * significand * 2<sup>exponent</sup>表示一个小数，代码采取了有效数化整、增加小数位的方法，将有效数设为5<sup>-exponent</sup> * sign * significand，小数位增加（-exponent）位。这是为什么呢？计算过程如下（数学渣，求轻拍）：
 
 ![formulae](/assets/bigdecimal-learning-note/formulae.jpeg)
 
 * exponent大于0时，sign * significand * 2<sup>exponent</sup>表示整数，直接计算即可。
 
+接着分析剩下代码。
 
 {% highlight java %}
 
