@@ -145,7 +145,7 @@ sign为符号位，exponent为指数。exponent bias为指数偏移值（1023）
 
 ![double-rep2](/assets/bigdecimal-learning-note/double-represent-2.png)
 
-上面的1.fraction变成了0.fraction。虽然直观上觉得这种特殊情况处理不太优美，但想想也在情理之中，要不然数字0怎么用double表示呢？
+指数部分变成了1 - exponent bias，有效数部分1.fraction变成了0.fraction。虽然直观上觉得这种特殊情况处理不太优美，但想想也在情理之中，要不然数字0怎么用double表示呢？
 
 背景知识已说完，我们来看下上面的第三条语句：
 
@@ -157,7 +157,7 @@ long significand = (exponent == 0
 
 {% endhighlight %}
 
-这条语句表达的意思就是：当指数部分为0时，以0.fraction方式取出有效数；当指数部分不为0时，以1.fraction方式取出有效数。此外，我们希望significand保存的是一个整数，我们只需在科学计数法中将指数部分再减去52，significand存储的数据就可以看做是整数了。
+这条语句表达的意思就是：当指数部分为0时，以0.fraction方式取出有效数（同时左移一位，即乘以2）；当指数部分不为0时，以1.fraction方式取出有效数。此外，我们希望significand保存的是一个整数，我们只需在科学计数法中将指数部分再减去52，significand存储的数据就可以看做是整数了。
 
 这也就是第四行代码表达的意思：
 
