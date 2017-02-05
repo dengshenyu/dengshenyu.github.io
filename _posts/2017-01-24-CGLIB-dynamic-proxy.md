@@ -6,7 +6,7 @@ description: "CGLIB动态代理"
 date: 2017-01-24 16:00
 categories: "Java"
 ---
-> 原文地址[http://jnb.ociweb.com/jnb/jnbNov2005.html](http://jnb.ociweb.com/jnb/jnbNov2005.html)
+> 原文地址 [http://jnb.ociweb.com/jnb/jnbNov2005.html](http://jnb.ociweb.com/jnb/jnbNov2005.html)
 
 
 ## CGLIB
