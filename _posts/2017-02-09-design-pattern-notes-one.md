@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "设计模式读书笔记之创建型模式"
-keywords: "Java,CGLIB"
-description: "CGLIB动态代理"
-date: 2017-01-24 16:00
+title: "《设计模式》读书笔记之创建型模式"
+keywords: "Java,设计模式"
+description: "设计模式》读书笔记之创建型模式"
+date: 2017-02-09 16:00
 categories: "Java"
 ---
 
@@ -11,6 +11,7 @@ categories: "Java"
 创建型模式抽象了实例化过程。
 
 创建型模式包含如下五种模式：
+
 * Abstract Factory（抽象工厂）
 * Builder（生成器）
 * Factory Method（工厂方法）
@@ -31,7 +32,7 @@ categories: "Java"
 
 考虑一个支持多种视感标准的用户界面工具包，例如Motif和Presentation Manager。不同的视感风格为诸如滚动条、窗口和按钮等用户界面组件定义不同的外观和行为。为了保证不同视感风格的可切换，应用不应该硬编码它的界面组件。
 
-我们可以定义一个抽象的WidgetFactory类，这个类声明了一个用来创建每一类基本窗口组件的接口。每一类窗口组件都有一个抽象类，而具体子类则实现了窗口组件的特定视感风格。对于每一个抽象窗口组件类，WidgetFactory接口都有一个返回新窗口组件对象的操作。客户调用这些操作以获得窗口组件实例，但客户并不知道他们正在使用的是哪些具体类。这样客户就不依赖一般的视感风格。
+我们可以定义一个抽象的WidgetFactory类，这个类声明了一个用来创建每一类基本窗口组件的接口。每一类窗口组件都有一个抽象类，而具体子类则实现了窗口组件的特定视感风格。对于每一个抽象窗口组件类，WidgetFactory接口都有一个返回新窗口组件对象的操作。客户调用这些操作以获得窗口组件实例，但客户并不知道他们正在使用的是哪些具体类。这样客户就不依赖一般的视感风格。如下图所示。
 
 ![abstract-factory](/assets/design-pattern-notes-one/abstract-factory.png)
 
@@ -45,7 +46,7 @@ categories: "Java"
 
 一个RTF（Rich Text Format）文档交换格式的阅读器应能将RTF转换为多种正文格式。该阅读器可以将RTF文档转换成普通ASCII文本或转换成一个能以交互方式编辑的正文窗口组件。但问题在于可能转换的数目是无限的，因此要能够很容易实现新的转换的增加，同时却不改变RTF阅读器。
 
-一个解决办法是，我们使用TextConverter来抽象将RTF转换成另一种正文表示这个过程，并且将它配置到RTFReader类中。当RTFReader对RTF文档进行语法分析时，它使用TextConverter做转换。无论何时RTFReader识别了一个RTF标记（或是普通正文或是一个RTF控制字），它都发送一个请求给TextConverter去转换这个标记。TextConverter对象负责进行数据转换以及用特定格式表示该标记。
+一个解决办法是，我们使用TextConverter来抽象将RTF转换成另一种正文表示这个过程，并且将它配置到RTFReader类中。当RTFReader对RTF文档进行语法分析时，它使用TextConverter做转换。无论何时RTFReader识别了一个RTF标记（或是普通正文或是一个RTF控制字），它都发送一个请求给TextConverter去转换这个标记。TextConverter对象负责进行数据转换以及用特定格式表示该标记。如下图所示。
 
 ![builder](/assets/design-pattern-notes-one/builder.png)
 
