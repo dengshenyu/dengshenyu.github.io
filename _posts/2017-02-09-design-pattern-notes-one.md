@@ -2,9 +2,9 @@
 layout: post
 title: "《设计模式》读书笔记之创建型模式"
 keywords: "Java,设计模式"
-description: "设计模式》读书笔记之创建型模式"
+description: "《设计模式》读书笔记之创建型模式"
 date: 2017-02-09 16:00
-categories: "Java"
+categories: "计算机科学"
 ---
 
 
