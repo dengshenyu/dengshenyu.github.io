@@ -151,6 +151,7 @@ int c = a + b; //3
 
 参考资料
 
+* [Package java.util.concurrent.atomic](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/package-summary.html)
 * [Java Memory Model](https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.4)
 * [Java内存模型Cookbook（二）内存屏障](http://ifeve.com/jmm-cookbook-mb/)
 * [AtomicInteger lazySet vs. set](http://stackoverflow.com/questions/1468007/atomicinteger-lazyset-vs-set)
