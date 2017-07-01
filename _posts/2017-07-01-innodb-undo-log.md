@@ -7,7 +7,6 @@ date: 2017-07-01 17:00
 categories: "Mysql"
 ---
 
-> Jeremy Cole, [The basics of the InnoDB undo logging and history system](https://blog.jcole.us/2014/04/16/the-basics-of-the-innodb-undo-logging-and-history-system/)
 
 InnoDB实现了[多版本并发控制（MVCC）](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)，意味着不同的用户可以看到不同版本的数据（有时候也会称作**快照**，但这种叫法有些误导性）。这样做是为了用户能够在不使用锁的情况下看到数据库一致性的视图，因为锁极其影响性能和并发。InnoDB的undo日志和“历史”系统是MVCC的实现基础。
 
@@ -63,3 +62,5 @@ InnoDB实现MVCC最关键的一点是，当一条记录被修改时，当前的�
 
 在InnoDB中，我们可以通过“SHOW ENGINE INNODB STATUS”的“History list length”来看系统中当前的历史使用量。这个是undo日志中所有数据库改动的统计，以**undo日志单元**为单位（可能包括一个或多个记录改动）。
 
+
+> 原文地址[The basics of the InnoDB undo logging and history system](https://blog.jcole.us/2014/04/16/the-basics-of-the-innodb-undo-logging-and-history-system/)
