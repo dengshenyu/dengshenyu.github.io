@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "【读书笔记】Google File System"
+title: "Google File System"
 keywords: "分布式系统, gfs"
 description: "google file system读书笔记"
 date: 2017-08-05 18:00
