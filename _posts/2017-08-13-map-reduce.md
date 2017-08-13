@@ -4,7 +4,7 @@ title: "MapReduce"
 keywords: "分布式系统, map reduce"
 description: "MapReduce读书笔记"
 date: 2017-08-13 16:00
-categories: "计算机科学, 分布式系统"
+categories: ["计算机科学", "分布式系统"]
 ---
 
 ## 介绍
