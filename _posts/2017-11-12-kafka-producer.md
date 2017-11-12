@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Kafka系列（三）--Kafka生产者：写消息到Kafka"
+title: "Kafka系列（三）Kafka生产者：写消息到Kafka"
 keywords: "Kafka，分布式系统"
 description: "Kafka系列（三）--Kafka生产者：写消息到Kafka"
 date: 2017-11-12 15:00

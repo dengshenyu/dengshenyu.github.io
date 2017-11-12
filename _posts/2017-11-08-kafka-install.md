@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Kafka系列（二）--搭建Kafka"
+title: "Kafka系列（二）搭建Kafka"
 keywords: "Kafka，分布式系统"
 description: "Kafka系列（二）--搭建Kafka"
 date: 2017-11-08 23:00

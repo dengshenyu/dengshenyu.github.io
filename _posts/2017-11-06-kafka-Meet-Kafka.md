@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Kafka系列（一）--初识Kafka"
+title: "Kafka系列（一）初识Kafka"
 keywords: "Kafka，分布式系统"
 description: "Kafka系列（一）--初识Kafka"
 date: 2017-11-06 22:00
