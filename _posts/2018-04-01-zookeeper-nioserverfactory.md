@@ -8,7 +8,7 @@ categories:
 - 分布式系统
 ---
 
-Zookeeper可以说是业界最流行的分布式协调解决方案，其源码值得我们好好静下心来学习和研究。从本系列开始，我将会分享Zookeeper中最核心的代码，希望对大家有所帮助和启发。
+Zookeeper可以说是业界最流行的分布式协调解决方案，其源码值得我们好好静下心来学习和研究。
 
 这篇文章主要分析NIOServerCnxnFactory这个类。NIOServerCnxnFactory和NettyServerCnxnFactory是Zookeeper服务端用来处理连接的核心类，前者基于NIO，后者基于Netty框架。废话少说，让我们一起来看下NIOServerCnxnFactory这个类是如何实现的：）。
 
