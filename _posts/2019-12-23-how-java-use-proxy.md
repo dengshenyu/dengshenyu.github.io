@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Java中如何使用代理
 ---
 
@@ -21,6 +22,7 @@ title: Java中如何使用代理
 稍微解释下，在当前的场景下我们需要这个nginx作为本地Java进程的正向代理。假如Java进程中需要访问www.baidu.com ，那么Java进程会把该HTTP请求发给nginx，然后nginx再原封不动的把请求发出去。这个过程跟nginx作为反向代理不同的地方在于，反向代理收到请求后，是转给特定后端服务的，说白了就是nginx转发的host部分跟原始请求的host是不同的。
 
 编辑`/usr/local/etc/nginx/nginx.conf`配置中的监听8080的server部分，修改为：
+
 ```
     server {
         listen       8080;
@@ -43,7 +45,8 @@ title: Java中如何使用代理
 修改完配置后，直接在命令行下执行`nginx`命令运行nginx。
 
 接下来，我们写一个简单的Java程序来使用这个nginx代理，代码如下：
-```
+
+```java
    public static void main(String[] args) {
         try {
             System.setProperty("http.proxyHost", "127.0.0.1");
