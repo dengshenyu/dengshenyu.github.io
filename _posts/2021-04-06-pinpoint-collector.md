@@ -1,0 +1,43 @@
+---
+layout: post
+title: 工作笔记--Pinpoint Collector
+---
+
+由于项目的需要，最近看了下[Pinpoint](https://github.com/pinpoint-apm/pinpoint)这个APM工具的源码。这里称之为“工具”可能并不恰当，因为它除了提供应用端的Agent，还提供了一个基于Hbase存储和查询的服务端。关于Pinpoint的具体介绍感兴趣的可以稍后自行查看其具体功能细节，这里不做展开。
+
+# Pinpoint的缺点与思考
+
+从目前接触来看，Pinpoint的一个最大的缺点就是：它强依赖Hbase！这意味着你如果想在本地启动起来玩一下，需要首先安装Hbase...好吧，这一点已经劝退很多人了，包括我在内：）。
+
+正因为Pinpoint重度依赖Hbase，因此我萌生了一个大胆的想法：是否可以改写Pinpoint使其可以不依赖Hbase呢？在日常开发测试场景下，我们是需要保存少量的数据，根本不需要用到Hbase来存储嘛！甚至，我们只需要保存最近的链路数据就可以，这样的话存储空间只是O(1)级别的。那么是否可以直接采取基于内存的存储方式呢？
+
+我觉得是可以的。每个Pinpoint Agent既是Reporter，也是Collector，可以保存它自身的链路数据。那在分布式场景下，怎么收集整个链路的Tracing数据呢？要达到这一点，Agent节点相互之间需要可以通信。Agent占用固定的端口是可以的，但未免缺乏弹性，并且也有端口已经被占用的问题。因此，上游的Agent应该主动将它的IP地址和服务端口传递给直接下游的Agent，这个IP地址和服务端口的信息可以跟TraceId一起同时传给下游Agent。这样当下游Agent产生链路数据时，就可以反向将数据通过该IP和服务端口传给上游的Agent。最上游的Agent就会收到整个链路的数据。
+
+这个机制我觉得是没问题的。在每个Agent上，都可以查看它和它下游的链路数据；在最上游的Agent上，可以查看整个链路的数据。每个Agent可以首先采用固定的服务端口，如果该端口被占用，则可采取一定策略来使用其他端口。由于IP地址和端口信息是会传给下游的，因此不存在灵活性或占用问题。
+
+# Pinpoint Collector源码分析
+
+网络上关于Pinpoint的源码分析文章不是很多，而且相当一部分都是抄袭或者内容过时的。因此这里做下整理，便于后续工作需要随时可查看。本文主要对Collector部分源码做下整理。
+
+## Pinpoint Collector整体介绍
+
+Pinpoint Collector是整个服务端应用的入口，最新版本已经采用SpringBoot架构。不过，Collector内部的模块声明和组装同时结合了注解形式和配置文件形式，注解形式是SpringBoot的特点，而配置文件形式则是标准的SpringMVC。Collector部分的启动类为`com.navercorp.pinpoint.collector.CollectorApp`，`CollectorApp`最重要的作用是加载核心配置文件，这些配置文件的文件名格式为`applicationContext-collector-<模块>.xml`，模块包括：profile、grpc、hbase、thrift、namespace和flink等等...
+
+在这些模块中，grpc、thrift和hbase是最核心的几个配置模块。Collector对外提供基于grpc协议或者thrift协议的服务，然后将接收到的数据使用hbase模块做存储和查询。下面对Thrift模块做进一步分析。
+
+## PinpointServerAcceptor和PinpoinServerAcceptorProvider
+
+PinpointServerAcceptor的工作职责确实是一个“Acceptor”，它负责接收并维护Agent连接，并且解析出一个完整的消息包。消息包是基于固定头部和变长消息体进行解析。PinpointServerAcceptor只负责解析大概的消息包类型，至于具体是哪种消息它并不关心。值得一提的是，PinpointServerAcceptor基于Netty框架进行协议处理和消息提取，整个处理流程是基于Netty的Pipeline来构建的。
+
+PinpoinServerAcceptorProvider是用来创建PinpointServerAcceptor的。在Collector中，它提供了Agent、Span和Stat三个维度的信息上报；每一种信息都单独通过端口提供上报服务。也就是说，Collector会占用三个端口来提供数据上报，每个端口的背后都是一个PinpointServerAcceptor。但不是每种信息服务都是默认开启的，如Span信息上报服务是需要手动打开开关才会进行工作。
+
+## AgentBaseDataReceiver 、DefaultTCPPacketHandler和 AgentDispatchHandler
+
+这三个是负责进行Agent信息处理的类，其他两种类型（Span和Stat）也有差不多的处理流程，这里以Agent信息为例进行分析。AgentBaseDataReceiver负责将Acceptor接收到的消息包调用DefaultTCPPacketHandler处理，DefaultTCPPacketHandler将消息包反序列化成具体的Thrift类后，进一步分派给AgentDispatchHandler进行处理。而AgentDispatchHandler则进一步调用相关的Handler进行具体的消息处理，比如ThriftAgentInfoHandler、ThriftSqlMetaDataHandler等等...由AgentDispatchHandler的`getRequestResponseHandler`方法可知，它根据消息头部的类型信息来选择不同的Handler。
+
+## DefaultTBaseLocator
+
+这个类里面存放的是消息头种类和具体Thrift处理类的对应关系，它会被DefaultTCPPacketHandler调用来根据不同的消息头来序列化成不同的Thrift类。
+
+
+
