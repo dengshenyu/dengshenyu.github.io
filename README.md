@@ -1,4 +1,4 @@
-[Dengshenyu Blog](https://www.dengshenyu.com)
+[Dengshenyu Blog](https://dengshenyu.github.io)
 ================================
 
 > This theme is forked from [Hux](https://github.com/Huxpro/huxpro.github.io).
