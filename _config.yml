@@ -1,11 +1,11 @@
 # Site settings
 title: 技术，永无止境
-navTitle: Dengshenyu Blog
-SEOTitle: 邓深元的博客 | Dengshenyu Blog
+navTitle: 纳海的博客
+SEOTitle: 纳海的博客 | Nahai Blog
 header-img: img/home-bg.jpg
 email: dengshenyu@gmail.com
 description: "一枚喜欢折腾的伪90后码农 | 咖啡因中毒患者 | 强迫症未完全体 | 伪文艺青年。"
-keyword: "邓深元, 纳海, 海纳百川, dengshenyu, 邓深元的博客, Dengshenyu Blog, 博客, 个人网站, 互联网, Web, Java, 后端, 云原生"
+keyword: "邓深元, 纳海, 海纳百川, dengshenyu, 邓深元的博客, Dengshenyu Blog, 博客, 个人网站, 互联网, Web, Java, 后端, 云原生, 纳海"
 url: "https://dengshenyu.github.io"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
