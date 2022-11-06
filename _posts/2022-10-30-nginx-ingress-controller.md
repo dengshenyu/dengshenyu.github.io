@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 云原生--Nginx Ingress Controller
+title: 云原生组件分析--Nginx Ingress Controller
 ---
 
 # NodePort、Loadbalancer和Ingress
