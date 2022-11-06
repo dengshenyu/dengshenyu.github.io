@@ -293,7 +293,7 @@ if (mcp > 0) { // do rounding
 
 参考资料：
 
-* [谈谈浮点数](http://www.dengshenyu.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/2016/04/11/float-number.html)
+* [谈谈浮点数](http://nahai.me/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/2016/04/11/float-number.html)
 
 * [Double-precision floating-point format](https://en.wikipedia.org/wiki/Double-precision_floating-point_format)
 

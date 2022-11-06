@@ -604,7 +604,7 @@ while (true) {
 
 ### 使用Avro反序列化
 
-假设我们使用[之前生产者Avro序列化时使用的Customer](http://www.dengshenyu.com/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/12/kafka-producer.html)，那么使用Avro反序列化的话，我们的样例代码如下：
+假设我们使用[之前生产者Avro序列化时使用的Customer](http://nahai.me/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/12/kafka-producer.html)，那么使用Avro反序列化的话，我们的样例代码如下：
 
 {% highlight java %}
 

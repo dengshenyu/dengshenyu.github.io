@@ -7,7 +7,7 @@ date: 2017-09-06 00:25
 categories: "Java"
 ---
 
-[Hystrix：分布式系统的高性能及高可用解决方案（一）](http://www.dengshenyu.com/java/2017/08/30/histrix.html)
+[Hystrix：分布式系统的高性能及高可用解决方案（一）](http://nahai.me/java/2017/08/30/histrix.html)
 
 ## 请求缓存
 

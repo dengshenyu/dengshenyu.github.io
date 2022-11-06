@@ -96,7 +96,7 @@ int c = a + b; //3
 
 但在多线程情况下，这些重排序往往会让程序结果不可预测。因此为了保证多线程情况下的行为可预期，Java专家组制定了[Java内存模型](http://www.cs.umd.edu/~pugh/java/memoryModel/)规范。这个规范在上层向我们保证了特定语义（譬如volatile、监视器锁）的上下文顺序性，而在底层实现中通过使用内存屏障(Memory Barrier)指令来保证指令顺序。
 
-对于上下文顺序性，我之前整理过[一篇文章](http://www.dengshenyu.com/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/2016/05/01/jmm-happens-before.html)介绍这些happens-before规则，这里不再赘述。
+对于上下文顺序性，我之前整理过[一篇文章](http://nahai.me/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/2016/05/01/jmm-happens-before.html)介绍这些happens-before规则，这里不再赘述。
 
 这里简单介绍下底层实现中的内存屏障。
 

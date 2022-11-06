@@ -64,7 +64,7 @@ Google使用大量相互连接的廉价PC作为MapReduce集群，细节如下：
 1. 双核x86处理器，2-4GB内存，Linux系统；
 2. 使用百兆或千兆网卡；
 3. 集群由大量的机器组成，因此集群中机器故障会经常发生；
-4. 使用廉价的IDE硬盘，使用[GFS](http://www.dengshenyu.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/2017/08/05/google-file-system.html)分布式文件系统；
+4. 使用廉价的IDE硬盘，使用[GFS](http://nahai.me/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/2017/08/05/google-file-system.html)分布式文件系统；
 5. 用户提交job到调度系统，而job包含多个task，由调度系统将task分派给机器执行
 
 ### 整体执行流程

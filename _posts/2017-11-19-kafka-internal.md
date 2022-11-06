@@ -18,7 +18,7 @@ categories: ["分布式系统"]
 
 ## 集群成员管理
 
-Kafka使用Zookeeper管理集群成员状态，每一个broker都有一个唯一ID（在配置文件中指定或者自动生成），当broker启动时会在Zookeeper中注册相应的临时节点（可参考[这篇文章](http://www.dengshenyu.com/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/01/zookeeper.html)）。如果集群中存在相同的ID，那么新的broker会启动失败。
+Kafka使用Zookeeper管理集群成员状态，每一个broker都有一个唯一ID（在配置文件中指定或者自动生成），当broker启动时会在Zookeeper中注册相应的临时节点（可参考[这篇文章](http://nahai.me/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/01/zookeeper.html)）。如果集群中存在相同的ID，那么新的broker会启动失败。
 
 Zookeeper中的节点注册路径为/broker/ids，Kafka的各个组件会监听此路径下的变更信息，当broker加入或者离开时，它们会收到通知。当节点离开（可能由于停机、网络故障、长GC等导致）时，Zookeeper中相应的节点会消失，但该broker的ID仍然会在某些数据结构中存在。比如，每个主题的副本列表会包含副本所在的broker ID，因此如果一个broker离开同时有一个新的broker拥有此相同的ID，那么新的broker会在集群中替代之前的broker，并且会被分配同样的主题和分区。
 
@@ -72,7 +72,7 @@ Kafka的broker主要工作是，当作为分区的主副本时，处理来自生
 
 ### 生产请求（produce request）
 
-[这篇文章](http://www.dengshenyu.com/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/12/kafka-producer.html)曾经说过，acks参数控制多少个副本确认写入成功后生产者才认为消息生产成功。这个参数的取值可以为：
+[这篇文章](http://nahai.me/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/12/kafka-producer.html)曾经说过，acks参数控制多少个副本确认写入成功后生产者才认为消息生产成功。这个参数的取值可以为：
 
 * acks=0：消息发送完毕，生产者认为消息写入成功；
 * acks=1：主副本写入成功，生产者认为消息写入成功；
